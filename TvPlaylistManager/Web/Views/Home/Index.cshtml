@@ -1,0 +1,60 @@
+﻿@using TvPlaylistManager.Domain.Models
+@using TvPlaylistManager.Domain.Models.Epg
+@model IEnumerable<EpgSource>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container">
+    <div class="row mb-2">
+        <div class="col d-flex justify-content-start">
+            <h3>Epg Sources</h3>
+        </div>
+        <div class="col d-flex justify-content-end">
+            <a class="btn btn-primary" asp-action="Create">
+                Add New
+            </a>
+        </div>
+    </div>
+
+    <table class="table table-bordered">
+        <thead class="text-center">
+            <tr>
+                <th scope="col" class="justify-content-center">#</th>
+                <th scope="col" class="justify-content-center">Alias</th>
+                <th scope="col" class="justify-content-center">Epg source address</th>
+                <th scope="col" class="justify-content-center">Status</th>
+                <th scope="col" class="justify-content-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody class="text-center">
+            @foreach (var source in Model)
+            {
+                <tr>
+                    <th scope="row">1</th>
+                    <td>@source.Alias</td>
+                    <td>
+                        <a href="@source.Url">
+                            @source.Url
+                        </a>
+                    </td>
+                    <td>
+                        @if (source.Status)
+                        {
+                            <span class="text-success">Active</span>
+                        }
+                        else
+                        {
+                            <span class="text-danger">Inactive</span>
+                        }
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@source.Id">Details</a>
+                        <a asp-action="Edit" asp-route-id="@source.Id">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@source.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

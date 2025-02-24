@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35806.99
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TvPlaylistManager", "TvPlaylistManager.csproj", "{67524467-4F2B-4EE0-B956-FB6CEF10103B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TvPlaylistManagerTests", "..\TvPlaylistManagerTests\TvPlaylistManagerTests.csproj", "{FD9D1B02-C3E9-4392-9CF4-3E0A768BD6F8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{67524467-4F2B-4EE0-B956-FB6CEF10103B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67524467-4F2B-4EE0-B956-FB6CEF10103B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67524467-4F2B-4EE0-B956-FB6CEF10103B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67524467-4F2B-4EE0-B956-FB6CEF10103B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD9D1B02-C3E9-4392-9CF4-3E0A768BD6F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD9D1B02-C3E9-4392-9CF4-3E0A768BD6F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD9D1B02-C3E9-4392-9CF4-3E0A768BD6F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD9D1B02-C3E9-4392-9CF4-3E0A768BD6F8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {692F91FC-0B4E-4BA6-9623-2CAA93D7116E}
+	EndGlobalSection
+EndGlobal
