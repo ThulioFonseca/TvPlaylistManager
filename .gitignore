@@ -482,3 +482,22 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# SQLite
+TvPlaylistManager/Infrastructure/Data/SQLite/*.db
+TvPlaylistManager/Infrastructure/Data/SQLite/*.db-shm
+TvPlaylistManager/Infrastructure/Data/SQLite/*.db-wal
+
+# Build Folders
+TvPlaylistManagerTests/bin/
+TvPlaylistManagerTests/obj/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Auto-generated files
+TestResults/
