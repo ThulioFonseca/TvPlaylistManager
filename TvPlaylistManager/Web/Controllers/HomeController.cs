@@ -1,92 +1,86 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using TvPlaylistManager.Application.Contracts.Interfaces;
 using TvPlaylistManager.Domain.Models;
 using TvPlaylistManager.Domain.Models.Epg;
-using TvPlaylistManager.Infrastructure.Data;
 
 namespace TvPlaylistManager.Web.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-    private readonly AppDbContext _context;
+    private readonly IEpgService _epgService;
 
-    public HomeController(AppDbContext context, ILogger<HomeController> logger)
+    public HomeController(IEpgService epgService)
     {
-        _logger = logger;
-        _context = context;
+        _epgService = epgService;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        var epgSources = _context.EpgSources.ToList();
+        var epgSources = await _epgService.GetAllEpgSources();
         return View(epgSources);
     }
 
-    public IActionResult Create(EpgSource source)
+    public async Task<IActionResult> Create(EpgSource source)
     {
         if (ModelState.IsValid)
         {
-            _context.EpgSources.Add(source);
-            _context.SaveChanges();
+            await _epgService.SaveEpgSource(source);
             return RedirectToAction("Index");
         }
         return View(source);
     }
 
-    public IActionResult Edit(long id)
+    public async Task<IActionResult> Edit(long id)
     {
-        var source = _context.EpgSources.Find(id);
+        var source = await _epgService.GetEpgSourceById(id);
         return View(source);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Edit(EpgSource source)
+    public async Task<IActionResult> Edit(EpgSource source)
     {
         if (ModelState.IsValid)
         {
-            _context.EpgSources.Update(source);
-            _context.SaveChanges();
+            await _epgService.UpdateEpgSoure(source);
             return RedirectToAction("Index");
         }
+
         return View(source);
     }
 
-    public IActionResult Delete(long id)
+    public async Task<IActionResult> Delete(long id)
     {
-        var source = _context.EpgSources.Find(id);
+        var source = await _epgService.GetEpgSourceById(id);
         if (source == null)
         {
             return NotFound();
         }
+
         return View(source);
     }
 
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public IActionResult DeleteConfirmed(long id)
+    public async Task<IActionResult> DeleteConfirmed(long id)
     {
-        var source = _context.EpgSources.Find(id);
+        var source = await _epgService.GetEpgSourceById(id);
 
         if (source == null)
-        {
             return NotFound();
-        }
 
-        _context.EpgSources.Remove(source);
-        _context.SaveChanges();
+        await _epgService.DeleteEpgSource(id);
 
         return RedirectToAction("Index");
     }
 
-    public IActionResult Details(long id)
+    public async Task<IActionResult> Details(long id)
     {
-        var source = _context.EpgSources.Find(id);
+        var source = await _epgService.GetEpgSourceById(id);
 
-        if (source == null) {
+        if (source == null)
             return NotFound();
-        }
 
         return View(source);
     }

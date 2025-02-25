@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using TvPlaylistManager.Infrastructure;
 using TvPlaylistManager.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,7 @@ builder.Configuration
     .AddEnvironmentVariables();
 
 ConfigureServices(builder.Services, builder.Configuration);
+builder.Services.ConfigureDependencies();
 
 var app = builder.Build();
 
@@ -40,6 +42,12 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
             builder => builder.AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader());
+    });
+
+    services.AddHttpClient("EpgClient", client =>
+    {
+        client.DefaultRequestHeaders.Add("Accept", "application/xml");
+        client.Timeout = TimeSpan.FromSeconds(30);
     });
 }
 
