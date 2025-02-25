@@ -18,6 +18,12 @@ namespace TvPlaylistManager.Application.Contracts.Dtos
         public string DisplayName { get; set; } = string.Empty;
 
         [XmlElement("icon")]
-        public string Icon { get; set; } = string.Empty;
+        public List<Icon> Icons { get; set; } = [];
+    }
+
+    public class Icon
+    {
+        [XmlAttribute("src")]
+        public string IconUrl { get; set; } = string.Empty;
     }
 }

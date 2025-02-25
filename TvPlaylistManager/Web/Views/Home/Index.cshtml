@@ -28,18 +28,20 @@
             </tr>
         </thead>
         <tbody class="text-center">
-            @foreach (var source in Model)
+            @foreach (var source in Model.OrderBy(x => x.Alias).Select((value, index) => new {value, index}))
             {
                 <tr>
-                    <th scope="row">1</th>
-                    <td>@source.Alias</td>
+                    <th scope="row">
+                        @(source.index + 1)
+                    </th>
+                    <td>@source.value.Alias</td>
                     <td>
-                        <a href="@source.Url">
-                            @source.Url
+                        <a href="@source.value.Url">
+                            @source.value.Url
                         </a>
                     </td>
                     <td>
-                        @if (source.Status)
+                        @if (source.value.Status)
                         {
                             <span class="text-success">Active</span>
                         }
@@ -49,9 +51,9 @@
                         }
                     </td>
                     <td>
-                        <a asp-action="Details" asp-route-id="@source.Id">Details</a>
-                        <a asp-action="Edit" asp-route-id="@source.Id">Edit</a>
-                        <a asp-action="Delete" asp-route-id="@source.Id">Delete</a>
+                        <a asp-action="Details" asp-route-id="@source.value.Id">Details</a>
+                        <a asp-action="Edit" asp-route-id="@source.value.Id">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@source.value.Id">Delete</a>
                     </td>
                 </tr>
             }

@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using System.IO.Compression;
+using System.Xml.Serialization;
 using TvPlaylistManager.Application.Contracts.Dtos;
 using TvPlaylistManager.Application.Contracts.Interfaces;
 using TvPlaylistManager.Domain.Models.Epg;
@@ -55,9 +56,13 @@ namespace TvPlaylistManager.Application.Services
                     {
                         await using var content = await response.Content.ReadAsStreamAsync();
 
+                        bool isGzip = response.Content.Headers.ContentType?.MediaType == "application/gzip" || IsGzipStream(content);
+
+                        await using var finalStream = isGzip ? new GZipStream(content, CompressionMode.Decompress) : content;
+
                         var serializer = new XmlSerializer(typeof(EpgXmlDto));
 
-                        if (serializer.Deserialize(content) is EpgXmlDto resultado)
+                        if (serializer.Deserialize(finalStream) is EpgXmlDto resultado)
                         {
                             var channels = resultado.Channels.Select(x => new EpgChannel()
                             {
@@ -65,7 +70,7 @@ namespace TvPlaylistManager.Application.Services
                                 Name = x.DisplayName,
                                 EpgSourceId = epgSource.Id,
                                 EpgSource = epgSource,
-                                IconUrl = x.Icon,
+                                IconUrl = x.Icons.FirstOrDefault()?.IconUrl,
                             }).ToList();
 
                             epgSource.Channels = channels;
@@ -107,6 +112,18 @@ namespace TvPlaylistManager.Application.Services
                 return null;
 
             }
+        }
+        private bool IsGzipStream(Stream stream)
+        {
+            const byte gzipMagic1 = 0x1f;
+            const byte gzipMagic2 = 0x8b;
+
+            stream.Seek(0, SeekOrigin.Begin);
+            int firstByte = stream.ReadByte();
+            int secondByte = stream.ReadByte();
+            stream.Seek(0, SeekOrigin.Begin);
+
+            return firstByte == gzipMagic1 && secondByte == gzipMagic2;
         }
     }
 }
