@@ -2,6 +2,7 @@
 using System.Xml.Serialization;
 using TvPlaylistManager.Application.Contracts.Dtos;
 using TvPlaylistManager.Application.Contracts.Interfaces;
+using TvPlaylistManager.Application.Helpers;
 using TvPlaylistManager.Domain.Models.Epg;
 
 namespace TvPlaylistManager.Application.Services
@@ -48,38 +49,9 @@ namespace TvPlaylistManager.Application.Services
             {
                 ArgumentNullException.ThrowIfNull(epgSource);
 
-                if (!string.IsNullOrEmpty(epgSource.Url))
-                {
-                    var response = await _httpClient.GetAsync(epgSource.Url);
+                var epgChannels = await GetEpgChannels(epgSource);
 
-                    if (response.IsSuccessStatusCode)
-                    {
-                        await using var content = await response.Content.ReadAsStreamAsync();
-
-                        bool isGzip = response.Content.Headers.ContentType?.MediaType == "application/gzip" || IsGzipStream(content);
-
-                        await using var finalStream = isGzip ? new GZipStream(content, CompressionMode.Decompress) : content;
-
-                        var serializer = new XmlSerializer(typeof(EpgXmlDto));
-
-                        if (serializer.Deserialize(finalStream) is EpgXmlDto resultado)
-                        {
-                            var channels = resultado.Channels.Select(x => new EpgChannel()
-                            {
-                                ChannelEpgId = x.Id,
-                                Name = x.DisplayName,
-                                EpgSourceId = epgSource.Id,
-                                EpgSource = epgSource,
-                                IconUrl = x.Icons.FirstOrDefault()?.IconUrl,
-                            }).ToList();
-
-                            epgSource.Channels = channels;
-                        }
-                    }
-                    else
-                        _logger.LogWarning("{EpgService} -Unsuccessful request: Status code - {StatusCode}, Respoonse - {Content} ", nameof(EpgService), response.StatusCode, response.Content);
-
-                }
+                epgSource.Channels = epgChannels;   
 
                 await _epgRepository.AddAsync(epgSource);
 
@@ -97,6 +69,41 @@ namespace TvPlaylistManager.Application.Services
                 _logger.LogError(ex, "{EpgService} - Unexpected Error", nameof(EpgService));
                 return null;
             }
+        }
+
+        private async Task<List<EpgChannel>> GetEpgChannels(EpgSource epgSource)
+        {
+            var channels = new List<EpgChannel>();
+
+            if (!string.IsNullOrEmpty(epgSource.Url))
+            {
+                var response = await _httpClient.GetAsync(epgSource.Url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    await using var content = await response.Content.ReadAsStreamAsync();
+
+                    bool isGzip = response.Content.Headers.ContentType?.MediaType == "application/gzip" || IsGzipStream(content);
+
+                    await using var finalStream = isGzip ? new GZipStream(content, CompressionMode.Decompress) : content;
+
+                    if (XmlHelper.DeserializeFromStream<EpgXmlDto>(finalStream) is EpgXmlDto result)
+                    {
+                        channels = [.. result.Channels.Select(x => new EpgChannel()
+                        {
+                            ChannelEpgId = x.Id,
+                            Name = x.DisplayName,
+                            EpgSourceId = epgSource.Id,
+                            EpgSource = epgSource,
+                            IconUrl = x.Icons.FirstOrDefault()?.IconUrl,
+                        })];
+                    }
+                }
+                else
+                    _logger.LogWarning("{EpgService} -Unsuccessful request: Status code - {StatusCode}, Respoonse - {Content} ", nameof(EpgService), response.StatusCode, response.Content);
+            }
+
+            return channels;
         }
 
         public async Task<EpgSource?> UpdateEpgSoure(EpgSource epgSource)
