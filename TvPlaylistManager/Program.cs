@@ -25,6 +25,8 @@ app.Run();
 
 void ConfigureServices(IServiceCollection services, IConfiguration configuration)
 {
+    builder.Services.AddProblemDetails();
+
     services.AddControllersWithViews()
         .AddRazorOptions(options =>
         {
@@ -47,7 +49,7 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
     services.AddHttpClient("EpgClient", client =>
     {
         client.DefaultRequestHeaders.Add("Accept", "application/xml");
-        client.Timeout = TimeSpan.FromSeconds(30);
+        client.Timeout = TimeSpan.FromSeconds(10);
     });
 }
 
@@ -62,6 +64,12 @@ void ConfigureMiddleware(WebApplication app)
     {
         app.UseDeveloperExceptionPage();
     }
+    app.UseExceptionHandler(new ExceptionHandlerOptions
+    {
+        StatusCodeSelector = ex => ex is TimeoutException
+            ? StatusCodes.Status503ServiceUnavailable
+            : StatusCodes.Status500InternalServerError
+    });
 
     app.UseHttpsRedirection();
     app.UseRouting();

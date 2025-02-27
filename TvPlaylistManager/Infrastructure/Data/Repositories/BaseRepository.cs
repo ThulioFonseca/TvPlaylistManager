@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using TvPlaylistManager.Application.Contracts.Interfaces;
+using TvPlaylistManager.Domain.Interfaces;
 
 namespace TvPlaylistManager.Infrastructure.Data.Repositories
 {

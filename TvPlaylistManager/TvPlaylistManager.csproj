@@ -20,14 +20,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\Contracts\Interfaces\" />
-    <Folder Include="Application\Contracts\Dtos\" />
-    <Folder Include="Application\Contracts\Enums\" />
-    <Folder Include="Application\Services\" />
     <Folder Include="Domain\Interfaces\" />
+    <Folder Include="Application\Contracts\Dtos\" />
+    <Folder Include="Infrastructure\Services\Notification\" />
     <Folder Include="Infrastructure\Data\Migrations\" />
     <Folder Include="Infrastructure\Data\Repositories\" />
     <Folder Include="Infrastructure\Data\SQLite\" />
+    <Folder Include="Infrastructure\Services\" />
   </ItemGroup>
 
 </Project>

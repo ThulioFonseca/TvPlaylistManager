@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace TvPlaylistManager.Application.Helpers
+namespace TvPlaylistManager.Infrastructure.Extensions
 {
     public static class XmlHelper
     {

@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace TvPlaylistManager.Application.Contracts.Interfaces
+namespace TvPlaylistManager.Domain.Interfaces
 {
     public interface IRepository<T> where T : class
     {

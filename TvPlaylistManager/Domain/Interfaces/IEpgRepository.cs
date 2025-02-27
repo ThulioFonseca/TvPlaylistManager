@@ -1,6 +1,6 @@
 ﻿using TvPlaylistManager.Domain.Models.Epg;
 
-namespace TvPlaylistManager.Application.Contracts.Interfaces
+namespace TvPlaylistManager.Domain.Interfaces
 {
     public interface IEpgRepository : IRepository<EpgSource>
     {

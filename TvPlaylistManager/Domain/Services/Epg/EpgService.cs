@@ -1,10 +1,12 @@
 ﻿using System.IO.Compression;
+using System.Text;
 using TvPlaylistManager.Application.Contracts.Dtos;
-using TvPlaylistManager.Application.Contracts.Interfaces;
-using TvPlaylistManager.Application.Helpers;
+using TvPlaylistManager.Application.Contracts.Exceptions;
+using TvPlaylistManager.Domain.Interfaces;
 using TvPlaylistManager.Domain.Models.Epg;
+using TvPlaylistManager.Infrastructure.Extensions;
 
-namespace TvPlaylistManager.Application.Services
+namespace TvPlaylistManager.Domain.Services.Epg
 {
     public class EpgService : IEpgService
     {
@@ -99,7 +101,10 @@ namespace TvPlaylistManager.Application.Services
                     }
                 }
                 else
-                    _logger.LogWarning("{EpgService} -Unsuccessful request: Status code - {StatusCode}, Respoonse - {Content} ", nameof(EpgService), response.StatusCode, response.Content);
+                {
+                    _logger.LogWarning("{EpgService} - Unsuccessful request: Status code - {StatusCode}, Respoonse - {Content} ", nameof(EpgService), response.StatusCode, response.Content);
+                    throw new BusinessException(string.Format("{0} - Unsuccessful request: Status code - {1}, Respoonse - {2} ", nameof(EpgService), response.StatusCode, response.Content));
+                }
             }
 
             return channels;

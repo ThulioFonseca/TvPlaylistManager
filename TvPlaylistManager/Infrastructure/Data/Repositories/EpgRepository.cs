@@ -1,4 +1,4 @@
-﻿using TvPlaylistManager.Application.Contracts.Interfaces;
+﻿using TvPlaylistManager.Domain.Interfaces;
 using TvPlaylistManager.Domain.Models.Epg;
 
 namespace TvPlaylistManager.Infrastructure.Data.Repositories

@@ -1,5 +1,5 @@
-﻿using TvPlaylistManager.Application.Contracts.Interfaces;
-using TvPlaylistManager.Application.Services;
+﻿using TvPlaylistManager.Domain.Interfaces;
+using TvPlaylistManager.Domain.Services.Epg;
 using TvPlaylistManager.Infrastructure.Data.Repositories;
 
 namespace TvPlaylistManager.Infrastructure

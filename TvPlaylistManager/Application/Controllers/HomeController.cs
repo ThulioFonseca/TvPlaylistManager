@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using TvPlaylistManager.Application.Contracts.Interfaces;
+using TvPlaylistManager.Domain.Interfaces;
 using TvPlaylistManager.Domain.Models;
 using TvPlaylistManager.Domain.Models.Epg;
 
-namespace TvPlaylistManager.Web.Controllers;
+namespace TvPlaylistManager.Application.Controllers;
 
 public class HomeController : Controller
 {

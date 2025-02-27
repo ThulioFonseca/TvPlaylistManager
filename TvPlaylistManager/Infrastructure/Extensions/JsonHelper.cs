@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace TvPlaylistManager.Application.Helpers
+namespace TvPlaylistManager.Infrastructure.Extensions
 {
     public static class JsonHelper
     {
