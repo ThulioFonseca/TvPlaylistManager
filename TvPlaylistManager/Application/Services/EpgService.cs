@@ -1,5 +1,4 @@
 ﻿using System.IO.Compression;
-using System.Xml.Serialization;
 using TvPlaylistManager.Application.Contracts.Dtos;
 using TvPlaylistManager.Application.Contracts.Interfaces;
 using TvPlaylistManager.Application.Helpers;
@@ -120,7 +119,7 @@ namespace TvPlaylistManager.Application.Services
 
             }
         }
-        private bool IsGzipStream(Stream stream)
+        private static bool IsGzipStream(Stream stream)
         {
             const byte gzipMagic1 = 0x1f;
             const byte gzipMagic2 = 0x8b;

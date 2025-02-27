@@ -23,6 +23,7 @@
                 <th scope="col" class="justify-content-center">#</th>
                 <th scope="col" class="justify-content-center">Alias</th>
                 <th scope="col" class="justify-content-center">Epg source address</th>
+                <th scope="col" class="justify-content-center">Create Date</th>
                 <th scope="col" class="justify-content-center">Status</th>
                 <th scope="col" class="justify-content-center">Actions</th>
             </tr>
@@ -40,20 +41,27 @@
                             @source.value.Url
                         </a>
                     </td>
+                    <td>@source.value.CreatedAt</td>
                     <td>
                         @if (source.value.Status)
                         {
-                            <span class="text-success">Active</span>
+                            <i class="bi bi-check-circle-fill text-success"></i>
                         }
                         else
                         {
-                            <span class="text-danger">Inactive</span>
+                            <i class="bi bi-x-circle-fill text-danger"></i>
                         }
                     </td>
-                    <td>
-                        <a asp-action="Details" asp-route-id="@source.value.Id">Details</a>
-                        <a asp-action="Edit" asp-route-id="@source.value.Id">Edit</a>
-                        <a asp-action="Delete" asp-route-id="@source.value.Id">Delete</a>
+                    <td class="text-center">
+                        <a asp-action="Details" asp-route-id="@source.value.Id" class="btn btn-sm btn-primary" title="Details">
+                            <i class="bi bi-eye"></i>
+                        </a>
+                        <a asp-action="Edit" asp-route-id="@source.value.Id" class="btn btn-sm btn-warning" title="Edit">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@source.value.Id" class="btn btn-sm btn-danger" title="Delete">
+                            <i class="bi bi-trash"></i>
+                        </a>
                     </td>
                 </tr>
             }

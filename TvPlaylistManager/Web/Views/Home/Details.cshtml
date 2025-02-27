@@ -5,98 +5,120 @@
 @{
     ViewData["Title"] = "Details";
 }
+<div class="row">
 
-<h1>EPG Details:</h1>
+    <h1>EPG Details:</h1>
 
-<div>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            Alias:
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Alias)
-        </dd>
-        <dt class="col-sm-2">
-            Url:
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Url)
-        </dd>
-        <dt class="col-sm-2">
-            Status:
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-        <dt class="col-sm-2">
-            Creation Date:
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CreatedAt)
-        </dd>
-        <dt class="col-sm-2">
-            Num. of Channels:
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Channels.Count)
-        </dd>
-    </dl>
-</div>
-<div>
-    <hr />
-    <div class="mb-4">
-        <h3>Channels</h3>
-    </div>
     <div>
-        <div class="overflow-auto" style="max-height: 400px">
-            <table class="table table-sm table-bordered table-striped text-center border-3 align-middle table-dark">
-                <thead class="sticky-top bg-body-tertiary ">
-                    <tr>
-                        <th class="col-sm-1">
-                            #
-                        </th>
-                        <th class="col-2">
-                            Channel Logo
-                        </th>
-                        <th class="col-3">
-                            Channel Name
-                        </th>
-                        <th class="col-3">
-                            Channel EPG ID
-                        </th>
-                        <th class="col-3">
-                            Keywords
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var channel in Model.Channels.OrderBy(x => x.Name).Select((value, index) => new { value, index }))
-                    {
-                        <tr class="">
-                            <td class="col-sm-1">
-                                @(channel.index + 1)
-                            </td>
-                            <td class="text-center align-middle">
-                                <img src="@channel.value.IconUrl" class="img-fluid" style="height:40px; width:40px; object-fit:contain; border:none" onerror="this.style.display='none';">
-                            </td>
-                            <td>
-                                @channel.value.Name
-                            </td>
-                            <td>
-                                @channel.value.ChannelEpgId
-                            </td>
-                            <td>
-                                @channel.value.Keywords
-                            </td>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                Alias:
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Alias)
+            </dd>
+            <dt class="col-sm-2">
+                Url:
+            </dt>
+            <dd class="col-sm-10">
+                <a href="@Html.DisplayFor(model => model.Url)">@Html.DisplayFor(model => model.Url)</a>
+            </dd>
+            <dt class="col-sm-2">
+                Status:
+            </dt>
+            <dd class="col-sm-10">
+                @if (Model.Status)
+                {
+                    <i class="bi bi-check-circle-fill text-success"> Active</i>
+                }
+                else
+                {
+                    <i class="bi bi-x-circle-fill text-danger"> Inactive</i>
+                }
+            </dd>
+            <dt class="col-sm-2">
+                Creation Date:
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.CreatedAt)
+            </dd>
+            <dt class="col-sm-2">
+                Num. of Channels:
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Channels.Count)
+            </dd>
+        </dl>
+    </div>
+    <div class="col">
+        <hr />
+        <div class="mb-4 row">
+            <h3>Channels</h3>
+        </div>
+        <div class="row">
+            <div class=" row overflow-auto" style="max-height: 40vh">
+                <table class="table table-sm table-bordered table-striped text-center border-3 align-middle table-secondary">
+                    <thead class="sticky-top bg-body-tertiary ">
+                        <tr>
+                            <th class="col-sm-1">
+                                #
+                            </th>
+                            <th class="col-2">
+                                Channel Logo
+                            </th>
+                            <th class="col-3">
+                                Channel Name
+                            </th>
+                            <th class="col-3">
+                                Channel EPG ID
+                            </th>
+                            <th class="col-3">
+                                Keywords
+                            </th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var channel in Model.Channels.OrderBy(x => x.Name).Select((value, index) => new { value, index }))
+                        {
+                            <tr class="">
+                                <td class="col-sm-1">
+                                    @(channel.index + 1)
+                                </td>
+                                <td class="text-center align-middle">
+                                    @{
+                                        if (!string.IsNullOrEmpty(channel.value.IconUrl))
+                                        {
+                                            <img src="@channel.value.IconUrl" class="img-fluid" style="height:40px; width:40px; object-fit:contain; border:none" onerror="this.style.display='none';">
+                                        }
+                                    }
+                                </td>
+                                <td>
+                                    @channel.value.Name
+                                </td>
+                                <td>
+                                    @channel.value.ChannelEpgId
+                                </td>
+                                <td>
+                                    @channel.value.Keywords
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <div class="row row-cols-2 p-3">
+        <div class="col col-md-1">
+            <a asp-action="Index" class="btn btn-danger w-100" title="Back">
+                <i class="bi bi-arrow-left"></i>
+            </a>
+        </div>
+        <div class="col col-md-1">
+            <a asp-action="Edit" asp-route-id="@@Model?.Id" class="btn btn-warning w-100" title="Edit">
+                <i class="bi bi-pencil"></i>
+            </a>
+        </div>
+    </div>
 </div>
