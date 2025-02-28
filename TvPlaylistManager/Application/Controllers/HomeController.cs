@@ -27,7 +27,7 @@ public class HomeController : BaseController
         if (ModelState.IsValid)
         {
             await _epgService.SaveEpgSource(source);
-            return BaseRedirectReturn("Index", data: source);
+            return BaseRedirectReturn("Index");
         }
 
         return BaseViewReturn(source);

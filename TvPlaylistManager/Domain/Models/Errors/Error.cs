@@ -5,10 +5,10 @@
         public string? Type { get; set; }
         public string? Message { get; set; }
 
-        public Error(string? message, string? errorType)
+        public Error(string? message, string? type)
         {
             Message = message;
-            Type = errorType;
+            Type = type;
         }
     }    
 }

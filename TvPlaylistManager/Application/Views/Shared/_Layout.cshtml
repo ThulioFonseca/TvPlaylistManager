@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using TvPlaylistManager.Domain.Models.Errors
+@using TvPlaylistManager.Domain.Models.Notification
+@using TvPlaylistManager.Infrastructure.Extensions
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -35,6 +38,38 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
+            <div class="toast-container position-fixed bottom-0 end-0 p-3">
+                @{
+                    var notificationsSerialized = TempData["Notifications"] as string;
+                    var notifications = notificationsSerialized != null ? JsonHelper.Deserialize<ErrorResponse>(notificationsSerialized) : null;
+
+                    if (notifications != null)
+                    {
+                        @foreach (var notification in notifications.Errors)
+                        {
+                            string toastClass = notification.Type switch
+                            {
+                                "Success" => "text-bg-success",
+                                "Error" => "text-bg-danger",
+                                "Warning" => "text-bg-warning",
+                                "Info" => "text-bg-info",
+                                _ => "text-bg-primary"
+                            };
+
+                            <div class="toast align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                                <div class="toast-header @toastClass">
+                                    <strong class="me-auto">@notification.Type</strong>
+                                    <small>@DateTime.Now.ToString("hh\\:mm")</small>
+                                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                                </div>
+                                <div class="toast-body">
+                                    @notification.Message
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+            </div>
             @RenderBody()
         </main>
     </div>

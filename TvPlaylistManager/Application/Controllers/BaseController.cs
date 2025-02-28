@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TvPlaylistManager.Domain.Interfaces;
 using TvPlaylistManager.Domain.Models.Errors;
+using TvPlaylistManager.Infrastructure.Extensions;
 
 namespace TvPlaylistManager.Application.Controllers
 {
@@ -16,7 +17,7 @@ namespace TvPlaylistManager.Application.Controllers
         protected IActionResult BaseViewReturn(object? data = null, string? viewName = null)
         {
             if (_notificationHandler.HasNotifications())
-                ViewBag.Notifications = GetErrorResponse();
+                TempData["Notifications"] = GetErrorResponse();
 
             if (data == null)
                 return View(viewName);
@@ -24,18 +25,15 @@ namespace TvPlaylistManager.Application.Controllers
             return View(viewName, data);
         }
 
-        protected IActionResult BaseRedirectReturn(string actionName, string? controllerName = null, object? data = null)
+        protected IActionResult BaseRedirectReturn(string actionName)
         {
             if (_notificationHandler.HasNotifications())
-            {
-                ViewBag.Notifications = GetErrorResponse();
-                return View(data);
-            }
+                TempData["Notifications"] = GetErrorResponse();
 
-            return RedirectToAction(actionName, controllerName);
+            return RedirectToAction(actionName);
         }
 
-        private ErrorResponse GetErrorResponse()
+        private string GetErrorResponse()
         {
             var instance = HttpContext?.Request?.Path.Value;
             var traceId = HttpContext?.TraceIdentifier;
@@ -54,7 +52,10 @@ namespace TvPlaylistManager.Application.Controllers
             response.Errors = errorList;
 
             _notificationHandler.Clear();
-            return response;
+
+            var serializadResposne = JsonHelper.Serialize(response);           
+            
+            return serializadResposne;
         }
     }
 }

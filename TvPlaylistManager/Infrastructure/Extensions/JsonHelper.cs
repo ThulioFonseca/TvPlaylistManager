@@ -19,7 +19,8 @@ namespace TvPlaylistManager.Infrastructure.Extensions
 
         private static readonly JsonSerializerOptions DeserializeOptions = new()
         {
-            PropertyNameCaseInsensitive = true
+            PropertyNameCaseInsensitive = true,
+            IncludeFields = true
         };
 
         /// <summary>

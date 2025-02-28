@@ -6,44 +6,7 @@
     ViewData["Title"] = "Create";
 }
 
-<div class="toast-container position-fixed bottom-0 end-0 p-3">
-    @if (ViewBag.Notifications != null)
-    {
-        @foreach (var notification in ViewBag.Notifications.Errors)
-        {
 
-            string toastClass = notification.Type switch
-            {
-                "Success" => "text-bg-success",
-                "Error" => "text-bg-danger",
-                "Warning" => "text-bg-warning",
-                "Info" => "text-bg-info",
-                _ => "text-bg-primary"
-            };
-
-            string toastTitle = notification.Type switch
-            {
-                "Success" => "Sucesso",
-                "Error" => "Erro",
-                "Warning" => "Aviso",
-                "Info" => "Informação",
-                _ => "Notificação"
-            };
-
-
-            <div class="toast align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="toast-header @toastClass">
-                    <strong class="me-auto">@toastTitle</strong>
-                    <small>@DateTime.Now.ToString("hh\\:mm\\:ss")</small>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-                </div>
-                <div class="toast-body">
-                    @notification.Message
-                </div>
-            </div>
-        }
-    }
-</div>
 
 <h1>Create</h1>
 
@@ -108,15 +71,7 @@
             saveBtn.disabled = true;
             backBtn.disabled = true;
 
-        });
-
-          document.addEventListener("DOMContentLoaded", function () {
-            let toastElements = document.querySelectorAll(".toast");
-            toastElements.forEach(function (toastEl) {
-                let toast = new bootstrap.Toast(toastEl, { delay: 5000 });
-                toast.show();
-            });
-        });
+        });    
 
     </script>
 
