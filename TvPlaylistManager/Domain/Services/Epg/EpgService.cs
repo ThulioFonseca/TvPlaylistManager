@@ -1,5 +1,4 @@
 ﻿using System.IO.Compression;
-using System.Text;
 using TvPlaylistManager.Application.Contracts.Dtos;
 using TvPlaylistManager.Application.Contracts.Exceptions;
 using TvPlaylistManager.Domain.Interfaces;
@@ -13,12 +12,14 @@ namespace TvPlaylistManager.Domain.Services.Epg
         private readonly ILogger<EpgService> _logger;
         private readonly IEpgRepository _epgRepository;
         private readonly HttpClient _httpClient;
+        private readonly INotificationHandler _notificationHandler;
 
-        public EpgService(ILogger<EpgService> logger, IEpgRepository epgRepository, IHttpClientFactory httpClientFactory)
+        public EpgService(ILogger<EpgService> logger, IEpgRepository epgRepository, IHttpClientFactory httpClientFactory, INotificationHandler notificationHandler)
         {
             _logger = logger;
             _epgRepository = epgRepository;
             _httpClient = httpClientFactory.CreateClient("EpgClient");
+            _notificationHandler = notificationHandler;
         }
 
         public async Task DeleteEpgSource(long id)
@@ -44,7 +45,7 @@ namespace TvPlaylistManager.Domain.Services.Epg
             return await _epgRepository.GetByIdAsync(id, x => x.Channels);
         }
 
-        public async Task<EpgSource?> SaveEpgSource(EpgSource epgSource)
+        public async Task SaveEpgSource(EpgSource epgSource)
         {
             try
             {
@@ -58,17 +59,11 @@ namespace TvPlaylistManager.Domain.Services.Epg
 
                 _logger.LogInformation("{EpgService} - EpgSource saved successfully", nameof(EpgService));
 
-                return epgSource;
-            }
-            catch (HttpRequestException ex)
-            {
-                _logger.LogError(ex, "{EpgService} - Failed to execute the request", nameof(EpgService));
-                return null;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "{EpgService} - Unexpected Error", nameof(EpgService));
-                return null;
+                await _notificationHandler.Handle(new() { Type = Enums.NotificationType.Error, Message = ex.Message });
             }
         }
 

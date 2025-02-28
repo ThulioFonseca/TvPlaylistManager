@@ -1,16 +1,16 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using TvPlaylistManager.Domain.Interfaces;
-using TvPlaylistManager.Domain.Models;
 using TvPlaylistManager.Domain.Models.Epg;
+using TvPlaylistManager.Domain.Models.Errors;
 
 namespace TvPlaylistManager.Application.Controllers;
 
-public class HomeController : Controller
+public class HomeController : BaseController
 {
     private readonly IEpgService _epgService;
 
-    public HomeController(IEpgService epgService)
+    public HomeController(IEpgService epgService, INotificationHandler notificationHandler) : base(notificationHandler)
     {
         _epgService = epgService;
     }
@@ -18,7 +18,8 @@ public class HomeController : Controller
     public async Task<IActionResult> Index()
     {
         var epgSources = await _epgService.GetAllEpgSources();
-        return View(epgSources);
+
+        return BaseViewReturn(epgSources);
     }
 
     public async Task<IActionResult> Create(EpgSource source)
@@ -26,15 +27,16 @@ public class HomeController : Controller
         if (ModelState.IsValid)
         {
             await _epgService.SaveEpgSource(source);
-            return RedirectToAction("Index");
+            return BaseRedirectReturn("Index", data: source);
         }
-        return View(source);
+
+        return BaseViewReturn(source);
     }
 
     public async Task<IActionResult> Edit(long id)
     {
         var source = await _epgService.GetEpgSourceById(id);
-        return View(source);
+        return BaseViewReturn(source);
     }
 
     [HttpPost]
@@ -44,7 +46,7 @@ public class HomeController : Controller
         if (ModelState.IsValid)
         {
             await _epgService.UpdateEpgSoure(source);
-            return RedirectToAction("Index");
+            return BaseRedirectReturn("Index");
         }
 
         return View(source);
@@ -53,12 +55,13 @@ public class HomeController : Controller
     public async Task<IActionResult> Delete(long id)
     {
         var source = await _epgService.GetEpgSourceById(id);
+
         if (source == null)
         {
             return NotFound();
         }
 
-        return View(source);
+        return BaseViewReturn(source);
     }
 
     [HttpPost, ActionName("Delete")]
@@ -72,7 +75,7 @@ public class HomeController : Controller
 
         await _epgService.DeleteEpgSource(id);
 
-        return RedirectToAction("Index");
+        return BaseRedirectReturn("Index");
     }
 
     public async Task<IActionResult> Details(long id)
@@ -82,12 +85,12 @@ public class HomeController : Controller
         if (source == null)
             return NotFound();
 
-        return View(source);
+        return BaseViewReturn(source);
     }
 
     public IActionResult Privacy()
     {
-        return View();
+        return BaseViewReturn();
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -16,7 +16,6 @@
             </a>
         </div>
     </div>
-
     <table class="table table-bordered">
         <thead class="text-center">
             <tr>
@@ -29,7 +28,7 @@
             </tr>
         </thead>
         <tbody class="text-center">
-            @foreach (var source in Model.OrderBy(x => x.Alias).Select((value, index) => new {value, index}))
+            @foreach (var source in Model.OrderBy(x => x.Alias).Select((value, index) => new { value, index }))
             {
                 <tr>
                     <th scope="row">

@@ -1,4 +1,4 @@
-namespace TvPlaylistManager.Domain.Models
+namespace TvPlaylistManager.Domain.Models.Errors
 {
     public class ErrorViewModel
     {

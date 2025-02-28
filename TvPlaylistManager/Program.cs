@@ -25,14 +25,14 @@ app.Run();
 
 void ConfigureServices(IServiceCollection services, IConfiguration configuration)
 {
-    builder.Services.AddProblemDetails();
+    services.AddProblemDetails();
 
     services.AddControllersWithViews()
         .AddRazorOptions(options =>
         {
             options.ViewLocationFormats.Clear();
-            options.ViewLocationFormats.Add("/web/views/{1}/{0}.cshtml");
-            options.ViewLocationFormats.Add("/web/views/Shared/{0}.cshtml");
+            options.ViewLocationFormats.Add("/Application/views/{1}/{0}.cshtml");
+            options.ViewLocationFormats.Add("/Application/views/Shared/{0}.cshtml");
         });
 
     services.AddDbContext<AppDbContext>(options =>
@@ -60,16 +60,6 @@ void ConfigureMiddleware(WebApplication app)
         app.UseExceptionHandler("/Home/Error");
         app.UseHsts();
     }
-    else
-    {
-        app.UseDeveloperExceptionPage();
-    }
-    app.UseExceptionHandler(new ExceptionHandlerOptions
-    {
-        StatusCodeSelector = ex => ex is TimeoutException
-            ? StatusCodes.Status503ServiceUnavailable
-            : StatusCodes.Status500InternalServerError
-    });
 
     app.UseHttpsRedirection();
     app.UseRouting();

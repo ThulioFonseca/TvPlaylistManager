@@ -1,6 +1,7 @@
 ﻿using TvPlaylistManager.Domain.Interfaces;
 using TvPlaylistManager.Domain.Services.Epg;
 using TvPlaylistManager.Infrastructure.Data.Repositories;
+using TvPlaylistManager.Infrastructure.Services.Notifications;
 
 namespace TvPlaylistManager.Infrastructure
 {
@@ -24,6 +25,7 @@ namespace TvPlaylistManager.Infrastructure
 
         private static IServiceCollection AddServices(this IServiceCollection services)
         {
+            services.AddScoped<INotificationHandler, NotificationHandler>();
             services.AddScoped<IEpgService, EpgService>();
 
             return services;
