@@ -1,6 +1,7 @@
 ﻿using System.IO.Compression;
 using TvPlaylistManager.Application.Contracts.Dtos;
 using TvPlaylistManager.Application.Contracts.Exceptions;
+using TvPlaylistManager.Domain.Enums;
 using TvPlaylistManager.Domain.Interfaces;
 using TvPlaylistManager.Domain.Models.Epg;
 using TvPlaylistManager.Infrastructure.Extensions;
@@ -27,13 +28,13 @@ namespace TvPlaylistManager.Domain.Services.Epg
             try
             {
                 await _epgRepository.DeleteAsync(id);
-                await _notificationHandler.Handle(new() { Type = Enums.NotificationType.Success, Message = "Epg source Deleted!" });
+                await _notificationHandler.Handle(NotificationType.Success, "Epg source Deleted!");
 
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "{EpgService} - Unexpected error when deleting EPG", nameof(EpgService));
-                await _notificationHandler.Handle(new() { Type = Enums.NotificationType.Error, Message = ex.Message });
+                await _notificationHandler.Handle(NotificationType.Error, ex.Message);
 
             }
         }
@@ -57,19 +58,19 @@ namespace TvPlaylistManager.Domain.Services.Epg
 
                 var epgChannels = await GetEpgChannels(epgSource);
 
-                epgSource.Channels = epgChannels;   
+                epgSource.Channels = epgChannels;
 
                 await _epgRepository.AddAsync(epgSource);
 
                 _logger.LogInformation("{EpgService} - EpgSource saved successfully", nameof(EpgService));
-                await _notificationHandler.Handle(new() { Type = Enums.NotificationType.Success, Message = "Epg source saved!" });
+                await _notificationHandler.Handle(NotificationType.Success, "Epg source saved!");
 
 
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "{EpgService} - Unexpected Error", nameof(EpgService));
-                await _notificationHandler.Handle(new() { Type = Enums.NotificationType.Error, Message = ex.Message });
+                await _notificationHandler.Handle(NotificationType.Error, ex.Message);
             }
         }
 
@@ -116,12 +117,12 @@ namespace TvPlaylistManager.Domain.Services.Epg
             try
             {
                 await _epgRepository.UpdateAsync(epgSource);
-                await _notificationHandler.Handle(new() { Type = Enums.NotificationType.Success, Message = "Epg source updated!"});
+                await _notificationHandler.Handle(NotificationType.Success, "Epg source updated!");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "{EpgService} - Unexpected error when updating EPG", nameof(EpgService));
-                await _notificationHandler.Handle(new() { Type = Enums.NotificationType.Error, Message = ex.Message});
+                await _notificationHandler.Handle(NotificationType.Error, ex.Message);
             }
         }
 

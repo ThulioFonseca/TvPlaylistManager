@@ -1,5 +1,6 @@
-﻿@using TvPlaylistManager.Domain.Models.Errors
-@using TvPlaylistManager.Domain.Models.Notification
+﻿@using TvPlaylistManager.Domain.Enums
+@using TvPlaylistManager.Domain.Models.Errors
+@using TvPlaylistManager.Domain.Models.Notifications
 @using TvPlaylistManager.Infrastructure.Extensions
 <!DOCTYPE html>
 <html lang="en">
@@ -41,18 +42,18 @@
             <div class="toast-container position-fixed bottom-0 end-0 p-3">
                 @{
                     var notificationsSerialized = TempData["Notifications"] as string;
-                    var notifications = notificationsSerialized != null ? JsonHelper.Deserialize<ErrorResponse>(notificationsSerialized) : null;
+                    var notifications = notificationsSerialized != null ? JsonHelper.Deserialize<BaseResponse>(notificationsSerialized) : null;
 
                     if (notifications != null)
                     {
-                        @foreach (var notification in notifications.Errors)
+                        @foreach (var notification in notifications.Notifications)
                         {
                             string toastClass = notification.Type switch
                             {
-                                "Success" => "text-bg-success",
-                                "Error" => "text-bg-danger",
-                                "Warning" => "text-bg-warning",
-                                "Info" => "text-bg-info",
+                                NotificationType.Success => "text-bg-success",
+                                NotificationType.Error => "text-bg-danger",
+                                NotificationType.Warning => "text-bg-warning",
+                                NotificationType.Info => "text-bg-info",
                                 _ => "text-bg-primary"
                             };
 

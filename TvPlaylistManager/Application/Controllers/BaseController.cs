@@ -17,7 +17,7 @@ namespace TvPlaylistManager.Application.Controllers
         protected IActionResult BaseViewReturn(object? data = null, string? viewName = null)
         {
             if (_notificationHandler.HasNotifications())
-                TempData["Notifications"] = GetErrorResponse();
+                TempData["Notifications"] = GetBaseReponse();
 
             if (data == null)
                 return View(viewName);
@@ -28,32 +28,21 @@ namespace TvPlaylistManager.Application.Controllers
         protected IActionResult BaseRedirectReturn(string actionName)
         {
             if (_notificationHandler.HasNotifications())
-                TempData["Notifications"] = GetErrorResponse();
+                TempData["Notifications"] = GetBaseReponse();
 
             return RedirectToAction(actionName);
         }
 
-        private string GetErrorResponse()
+        private string GetBaseReponse()
         {
             var instance = HttpContext?.Request?.Path.Value;
             var traceId = HttpContext?.TraceIdentifier;
-
-            var response = new ErrorResponse(instance, traceId);
-
-            var errorList = new List<Error>();
-
             var notifications = _notificationHandler.GetNotifications();
 
-            foreach (var notification in notifications)
-            {
-                errorList.Add(new Error(notification.Message, notification.Type.ToString()));
-            }
-
-            response.Errors = errorList;
+            var response = new BaseResponse(instance, traceId, notifications);       
+            var serializadResposne = JsonHelper.Serialize(response);           
 
             _notificationHandler.Clear();
-
-            var serializadResposne = JsonHelper.Serialize(response);           
             
             return serializadResposne;
         }

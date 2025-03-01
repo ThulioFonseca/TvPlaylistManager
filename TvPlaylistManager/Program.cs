@@ -49,7 +49,7 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
     services.AddHttpClient("EpgClient", client =>
     {
         client.DefaultRequestHeaders.Add("Accept", "application/xml");
-        client.Timeout = TimeSpan.FromSeconds(10);
+        client.Timeout = TimeSpan.FromSeconds(30);
     });
 }
 

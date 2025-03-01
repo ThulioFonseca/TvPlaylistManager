@@ -1,5 +1,6 @@
-﻿using TvPlaylistManager.Domain.Interfaces;
-using TvPlaylistManager.Domain.Models.Notification;
+﻿using TvPlaylistManager.Domain.Enums;
+using TvPlaylistManager.Domain.Interfaces;
+using TvPlaylistManager.Domain.Models.Notifications;
 
 namespace TvPlaylistManager.Infrastructure.Services.Notifications
 {
@@ -22,9 +23,9 @@ namespace TvPlaylistManager.Infrastructure.Services.Notifications
             return _notifications;
         }
 
-        public Task Handle(Notification notification)
+        public Task Handle(NotificationType notificationType, string notificationMessage )
         {
-            _notifications.Add(notification);
+            _notifications.Add(new(){Type = notificationType, Message = notificationMessage });
             return Task.CompletedTask;
         }
 

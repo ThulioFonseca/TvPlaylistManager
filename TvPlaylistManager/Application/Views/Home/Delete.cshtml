@@ -20,17 +20,25 @@
             @Html.DisplayFor(model => model.Alias)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Url)
+            Url:
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Url)
+            <a href="@Html.DisplayFor(model => model.Url)">@Html.DisplayFor(model => model.Url)</a>
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
+            Status:
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Status)
+            @if (Model.Status)
+            {
+                <i class="bi bi-check-circle-fill text-success"> Active</i>
+            }
+            else
+            {
+                <i class="bi bi-x-circle-fill text-danger"> Inactive</i>
+            }
         </dd>
+
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.CreatedAt)
         </dt>

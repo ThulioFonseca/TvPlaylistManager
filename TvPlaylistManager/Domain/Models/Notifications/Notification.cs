@@ -1,6 +1,6 @@
 ﻿using TvPlaylistManager.Domain.Enums;
 
-namespace TvPlaylistManager.Domain.Models.Notification
+namespace TvPlaylistManager.Domain.Models.Notifications
 {
     public class Notification
     {

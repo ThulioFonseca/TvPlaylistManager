@@ -19,7 +19,8 @@ namespace TvPlaylistManager.Infrastructure.Data.Configurations
                 .HasForeignKey(e => e.EpgSourceId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasIndex(e => e.Alias);
+            builder.HasIndex(e => e.Alias).IsUnique();
+            builder.HasIndex(e => e.Url).IsUnique();
         }
     }
 }
