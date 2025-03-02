@@ -20,7 +20,7 @@ namespace TvPlaylistManager.Infrastructure.Data.Repositories
             return await _dbSet.ToListAsync();
         }
 
-        public async Task<T?> GetByIdAsync(long id, params Expression<Func<T, object>>[] includes)
+        public async Task<T> GetByIdAsync(long id, params Expression<Func<T, object>>[] includes)
         {
             IQueryable<T> query = _dbSet;
 

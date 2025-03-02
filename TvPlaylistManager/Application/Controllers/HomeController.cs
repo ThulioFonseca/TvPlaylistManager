@@ -49,7 +49,7 @@ public class HomeController : BaseController
             return BaseRedirectReturn("Index");
         }
 
-        return View(source);
+        return BaseViewReturn(source);
     }
 
     public async Task<IActionResult> Delete(long id)

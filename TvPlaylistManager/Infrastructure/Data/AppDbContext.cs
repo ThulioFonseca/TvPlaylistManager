@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using TvPlaylistManager.Domain.Models.Epg;
+using TvPlaylistManager.Domain.Models.M3u;
 
 namespace TvPlaylistManager.Infrastructure.Data
 {
@@ -22,5 +23,6 @@ namespace TvPlaylistManager.Infrastructure.Data
                 optionsBuilder.UseSqlite("Data Source= Infrastructure/Data/SQLite/TvPlaylistManager.db");
             }
         }
+        public DbSet<TvPlaylistManager.Domain.Models.M3u.M3UPlaylist> M3UPlaylist { get; set; }
     }
 }

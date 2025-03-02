@@ -51,6 +51,15 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
         client.DefaultRequestHeaders.Add("Accept", "application/xml");
         client.Timeout = TimeSpan.FromSeconds(30);
     });
+
+    services.AddHttpClient("M3UClient", client =>
+    {
+        //client.DefaultRequestHeaders.Add("Content-Disposition", "attachment; filename=\"playlist.m3u\"");
+        //client.DefaultRequestHeaders.Add("Accept", "*");
+
+        client.Timeout = TimeSpan.FromSeconds(30);
+    });
+
 }
 
 void ConfigureMiddleware(WebApplication app)

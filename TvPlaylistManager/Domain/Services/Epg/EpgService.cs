@@ -45,7 +45,7 @@ namespace TvPlaylistManager.Domain.Services.Epg
             return sources;
         }
 
-        public async Task<EpgSource?> GetEpgSourceById(long id)
+        public async Task<EpgSource> GetEpgSourceById(long id)
         {
             return await _epgRepository.GetByIdAsync(id, x => x.Channels);
         }

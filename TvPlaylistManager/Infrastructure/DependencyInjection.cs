@@ -1,5 +1,6 @@
 ﻿using TvPlaylistManager.Domain.Interfaces;
 using TvPlaylistManager.Domain.Services.Epg;
+using TvPlaylistManager.Domain.Services.M3U;
 using TvPlaylistManager.Infrastructure.Data.Repositories;
 using TvPlaylistManager.Infrastructure.Services.Notifications;
 
@@ -19,6 +20,7 @@ namespace TvPlaylistManager.Infrastructure
         {
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
             services.AddScoped<IEpgRepository, EpgRepository>();
+            services.AddScoped<IM3URepository, M3URepository>();
 
             return services;
         }
@@ -27,6 +29,7 @@ namespace TvPlaylistManager.Infrastructure
         {
             services.AddScoped<INotificationHandler, NotificationHandler>();
             services.AddScoped<IEpgService, EpgService>();
+            services.AddScoped<IM3UService, M3UService>();
 
             return services;
         }

@@ -6,7 +6,7 @@ namespace TvPlaylistManager.Domain.Interfaces
     {
         Task SaveEpgSource(EpgSource epgSource);
         Task<IEnumerable<EpgSource>> GetAllEpgSources();
-        Task<EpgSource?> GetEpgSourceById(long id);
+        Task<EpgSource> GetEpgSourceById(long id);
         Task UpdateEpgSoure(EpgSource epgSource);
         Task DeleteEpgSource(long id);
     }

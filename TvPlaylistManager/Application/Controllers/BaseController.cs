@@ -14,7 +14,7 @@ namespace TvPlaylistManager.Application.Controllers
             _notificationHandler = notificationHandler;
         }
 
-        protected IActionResult BaseViewReturn(object? data = null, string? viewName = null)
+        protected IActionResult BaseViewReturn(object data = null, string viewName = null)
         {
             if (_notificationHandler.HasNotifications())
                 TempData["Notifications"] = GetBaseReponse();
