@@ -31,13 +31,20 @@ namespace TvPlaylistManager.Infrastructure.Extensions
             return sb.ToString();
         }
 
-        public static List<M3UChannelGroup> Deserialize(this string m3uContent)
+        public static List<M3UChannelGroup> Deserialize(this string m3uContent, bool excludeFilteredChannels)
         {
-            var lines = m3uContent.Split('\n').Select(line => line.Trim()).Where(line => !string.IsNullOrEmpty(line)).ToList();
-            if (lines.Count == 0 || !lines[0].StartsWith("#EXTM3U")) throw new FormatException("Invalid M3U file.");
+            var lines = m3uContent.Split('\n')
+                .Select(line => line.Trim())
+                .Where(line => !string.IsNullOrEmpty(line))
+                .ToList();
+
+            if (lines.Count == 0 || !lines[0].StartsWith("#EXTM3U"))
+                throw new FormatException("Invalid M3U file.");
 
             var channelGroups = new List<M3UChannelGroup>();
             var groupsDict = new Dictionary<string, M3UChannelGroup>();
+
+            var filteredTerms = new List<string> { "Adulto", "XXX", "18+", "Hot", "4K", "FHDR", "H265", "Alter"};
 
             for (int i = 1; i < lines.Count - 1; i++)
             {
@@ -57,12 +64,21 @@ namespace TvPlaylistManager.Infrastructure.Extensions
                             channelGroups.Add(group);
                         }
 
+                        var channelName = match.Groups["name"].Value;
+
+                        if (excludeFilteredChannels && filteredTerms.Exists(term => channelName.Contains(term, StringComparison.OrdinalIgnoreCase)))
+                        {
+                            continue; 
+                        }
+
+                        channelName = CleanChannelName(channelName);
+
                         var channel = new M3UChannel
                         {
                             TvgId = match.Groups["tvgId"].Value,
                             TvgName = match.Groups["tvgName"].Value,
                             TvgLogo = match.Groups["tvgLogo"].Value,
-                            Name = match.Groups["name"].Value,
+                            Name = channelName,
                             Url = lines[i + 1]
                         };
 
@@ -72,8 +88,23 @@ namespace TvPlaylistManager.Infrastructure.Extensions
                 }
             }
 
-            return channelGroups;
+            return [.. channelGroups.Where(x => x.Channels.Count > 0)];
         }
+
+        private static string CleanChannelName(string name)
+        {
+            if (name.EndsWith(" SD", StringComparison.OrdinalIgnoreCase))
+                name = name[..^3]; 
+
+            if (name.EndsWith("- SD", StringComparison.OrdinalIgnoreCase))
+                name = name[..^4];
+
+            if (name.EndsWith("FHD", StringComparison.OrdinalIgnoreCase))
+                name = name[..^3] + "HD";
+
+            return name.Trim();
+        }
+
 
         [GeneratedRegex(ExtInfPattern)]
         private static partial Regex M3uRegex();

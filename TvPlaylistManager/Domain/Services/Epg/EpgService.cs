@@ -138,5 +138,6 @@ namespace TvPlaylistManager.Domain.Services.Epg
 
             return firstByte == gzipMagic1 && secondByte == gzipMagic2;
         }
+
     }
 }
