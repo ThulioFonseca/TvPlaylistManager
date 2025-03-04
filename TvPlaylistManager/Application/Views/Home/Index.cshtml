@@ -16,8 +16,8 @@
             </a>
         </div>
     </div>
-    <table class="table table-bordered">
-        <thead class="text-center">
+    <table class="table table-bordered text-center">
+        <thead>
             <tr>
                 <th scope="col" class="justify-content-center">#</th>
                 <th scope="col" class="justify-content-center">Alias</th>
@@ -27,7 +27,7 @@
                 <th scope="col" class="justify-content-center">Actions</th>
             </tr>
         </thead>
-        <tbody class="text-center">
+        <tbody>
             @foreach (var source in Model.OrderBy(x => x.Alias).Select((value, index) => new { value, index }))
             {
                 <tr>

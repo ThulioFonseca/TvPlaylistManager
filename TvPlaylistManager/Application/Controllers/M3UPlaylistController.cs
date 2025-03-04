@@ -46,7 +46,7 @@ namespace TvPlaylistManager.Application.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Url,CreatedAt,UpdatedAt,EpgSourceId")] M3UPlaylist m3UPlaylist)
+        public async Task<IActionResult> Create(M3UPlaylist m3UPlaylist)
         {
             if (ModelState.IsValid)
             {
@@ -105,7 +105,7 @@ namespace TvPlaylistManager.Application.Controllers
             if (m3UPlaylist == null)
                 return NotFound();
 
-            await _epgService.DeleteEpgSource(id);
+            await _m3uService.DeleteM3uPlaylist(id);
 
             return BaseRedirectReturn("Index");
         }

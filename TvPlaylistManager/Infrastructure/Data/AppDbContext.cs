@@ -10,6 +10,7 @@ namespace TvPlaylistManager.Infrastructure.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         public DbSet<EpgSource> EpgSources { get; set; }
+        public DbSet<M3UPlaylist> M3UPlaylist { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -23,6 +24,5 @@ namespace TvPlaylistManager.Infrastructure.Data
                 optionsBuilder.UseSqlite("Data Source= Infrastructure/Data/SQLite/TvPlaylistManager.db");
             }
         }
-        public DbSet<TvPlaylistManager.Domain.Models.M3u.M3UPlaylist> M3UPlaylist { get; set; }
     }
 }

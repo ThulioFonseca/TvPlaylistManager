@@ -40,7 +40,7 @@ namespace TvPlaylistManager.Domain.Services.M3U
 
         public async Task<IEnumerable<M3UPlaylist>> GetAllM3uPlaylits()
         {
-            var sources = await _m3URepository.GetAllAsync();
+            var sources = await _m3URepository.GetAllM3uPlaylitsAsync();
             return sources;
         }
 
